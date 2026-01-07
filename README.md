@@ -1,200 +1,29 @@
-# Auto_updates
+# Naukri Automation Scripts
 
-Auto_updates is a small automation repository that provides scripts and utilities to help keep components, packages, or projects up to date with minimal manual intervention. It aims to make automatic update checks, notifications, and (optionally) safe application of updates simple and repeatable.
+Simple collection of scripts to automate Naukri login and uploads.
 
-This README gives an overview of the repository, how to install and configure it, example usages, and guidance for contributors.
+Prerequisites
+- Python 3.8+ and a virtual environment
+- Install dependencies if a `requirements.txt` exists
 
----
+Quick setup (Windows PowerShell)
 
-## Table of Contents
-
-- [Features](#features)
-- [Requirements](#requirements)
-- [Quick Start](#quick-start)
-- [Configuration](#configuration)
-- [Usage Examples](#usage-examples)
-- [Development](#development)
-- [Testing](#testing)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
-
----
-
-## Features
-
-- Periodic checks for updates (package, repo, or other resource)
-- Pluggable checkers and updaters so you can extend to other ecosystems
-- Dry-run mode to preview changes before applying them
-- Optional notification hooks (email, Slack, webhook)
-- Simple configuration via a YAML file
-
-> Note: This repository is organized so you can adapt it for different languages and package managers (e.g., apt, npm, pip, homebrew) by adding or modifying the checkers/updaters.
-
----
-
-## Requirements
-
-- A POSIX-compatible system (Linux, macOS) — Windows support may work via WSL
-- Python 3.8+ (if using Python scripts included here)
-- Git (if checking/updating git repositories)
-- Optional: Additional CLIs for specific ecosystems (e.g., npm, pip, brew)
-
-Check specific scripts inside the `scripts/` or `tools/` folder for per-checker requirements.
-
----
-
-## Quick Start
-
-1. Clone the repository:
-   ```
-   git clone https://github.com/Deekshith216/Auto_updates.git
-   cd Auto_updates
-   ```
-
-2. Create (or edit) the configuration file `config.yml` (see [Configuration](#configuration) below).
-
-3. Run the main checker script (example):
-   ```
-   ./run_checks.sh --config config.yml
-   ```
-   Or, for a Python-based runner:
-   ```
-   python3 runner.py --config config.yml
-   ```
-
-4. Inspect the generated report or notifications. Use `--dry-run` to preview actions without changes.
-
----
-
-## Configuration
-
-Auto_updates uses a YAML configuration file to define what to check, how often, and how to apply updates. Example `config.yml`:
-
-```yaml
-# config.yml
-checks:
-  - name: system-packages
-    type: apt
-    enabled: true
-    notify: true
-    apply: false
-
-  - name: python-deps
-    type: pip
-    path: ./my_project
-    enabled: true
-    notify: true
-    apply: false
-
-notifications:
-  slack:
-    enabled: false
-    webhook_url: "https://hooks.slack.com/services/..."
-  email:
-    enabled: false
-    to: "dev-team@example.com"
-    from: "auto-updates@example.com"
-    smtp:
-      host: smtp.example.com
-      port: 587
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 ```
 
-Key fields:
-- `checks`: list of check definitions. Each check defines the `type`, where to run (path), whether to `apply` updates automatically, and whether to `notify`.
-- `notifications`: one or more notification channels.
+Usage
+- Save or refresh login/cookie files:
 
-Add custom checkers by following the pattern in `checkers/` or `scripts/` folders.
+```powershell
+python save_naukri_login.py
+python save_naukri_cookies.py
+```
 
----
+- Run upload script (example):
 
-## Usage Examples
-
-- Run a single check in dry-run:
-  ```
-  python3 runner.py --config config.yml --check python-deps --dry-run
-  ```
-
-- Apply updates for a check (use with caution):
-  ```
-  python3 runner.py --config config.yml --check python-deps --apply
-  ```
-
-- Run all enabled checks and send notifications:
-  ```
-  ./run_checks.sh --config config.yml
-  ```
-
-- Integrate with cron:
-  ```
-  # Run every day at 03:30
-  30 3 * * * /path/to/Auto_updates/run_checks.sh --config /path/to/config.yml >> /var/log/auto_updates.log 2>&1
-  ```
-
----
-
-## Development
-
-Project layout (suggested):
-- `checkers/` — individual check modules (apt, pip, npm, git, etc.)
-- `tools/` or `scripts/` — wrapper scripts and entrypoints
-- `docs/` — documentation and examples
-- `config.yml.example` — example configuration
-
-To add a new checker:
-1. Create a new module under `checkers/` with a consistent interface (e.g., `discover()`, `check()`, `apply()`).
-2. Add tests under `tests/`.
-3. Update `config.yml.example` documenting new options.
-
-Coding conventions:
-- Write clear, well-documented functions
-- Keep side-effects behind flags (use `--apply` for real changes)
-- Provide dry-run behavior by default in scripts
-
----
-
-## Testing
-
-If tests are included:
-- Run tests with pytest (if Python tests exist):
-  ```
-  pytest
-  ```
-- For shell scripts, use shellcheck and bats where possible.
-
-Add CI workflows (GitHub Actions) in `.github/workflows/` to run tests and linters on each PR.
-
----
-
-## Contributing
-
-Contributions are welcome. Suggested workflow:
-1. Fork the repository.
-2. Create a feature branch (`feat/your-feature`).
-3. Add tests and documentation for your change.
-4. Open a pull request describing the change and why it helps.
-
-Please follow any contributor guidelines or CODE_OF_CONDUCT if present.
-
----
-
-## Troubleshooting
-
-- "No updates found" — Confirm the check configuration points to the correct path and the environment has the necessary CLI tools installed.
-- Notifications not sent — Verify webhook/SMTP credentials and network connectivity.
-- Permission errors when applying updates — Run apply steps with appropriate privileges or configure sudoers for automation.
-
----
-
-## License
-
-Specify the repository license here (e.g., MIT, Apache-2.0). If unknown, add a LICENSE file to the repo and update this section.
-
----
-
-## Contact
-
-Maintainer: Deekshith216  
-Repository: https://github.com/Deekshith216/Auto_updates
-
-If you have questions or issues, open an issue in the repository or submit a PR with improvements.
+```powershell
+python naukri_playwright_upload.py
+```
