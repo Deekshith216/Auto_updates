@@ -1,0 +1,14 @@
+# Ignore resume files and common resume folders
+resumes/
+**/resumes/
+resume.*
+*resume*
+*.pdf
+*.doc
+*.docx
+
+# Ignore students CSV and logs
+students.csv
+log.csv
+logs/
+*.log
